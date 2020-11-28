@@ -11,7 +11,7 @@ Proxy Server for older Samsung Smart-TVs (E/F - Series) which only support TLS u
 
 ### Preparing the Proxy
 
-Download the corresponding binary for your system from the latest releases and run it. You might want to run the binary on system start. This is different for each system but in the future the proxy will install itself if needed.
+Download the corresponding binary for your system from the [latest releases](https://github.com/kadrim/proxy4plex/releases/latest) and run it. You might want to run the binary on system start. This is different for each system but in the future the proxy will install itself if needed.
 
 ### Putting it together
 
