@@ -7,7 +7,7 @@ Proxy Server for older Samsung Smart-TVs (E/F - Series) which only support TLS u
 
 - Download the latest version of Orca's Plex-App for Samsung TVs from here https://www.dropbox.com/s/f17hx2w7tvofjqr/Plex_2.014_11112020.zip?dl=1
 - Install it sing USB-Sideloading or via SammyWidgets
-- Check this thread if you need more information: https://forums.plex.tv/t/samsung-tv-cannot-connect-to-plex/650100/8?u=plex_tyrael_metaname_de
+- Check this thread if you need more information: https://forums.plex.tv/t/samsung-tv-cannot-connect-to-plex/650100/8
 
 ### Preparing the Proxy
 
@@ -30,6 +30,11 @@ Note that you can run the app without the proxy after you logged in the first ti
 - serve as sideloading server so no need to manually run SammyWidgets
 - porting to Android and iOS
 - auto-update notifications 
+
+## Thanks
+
+- Thanks go out to @makeworld for the great makefile to build all platforms at https://gist.github.com/makeworld-the-better-one/e1bb127979ae4195f43aaa3ad46b1097
+- Very specials thanks to @Orca for his work on the plex-app for smarthub devices. Without that, nothing here would exist!
 
 ## Disclaimer
 THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
