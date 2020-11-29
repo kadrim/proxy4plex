@@ -22,13 +22,37 @@ Download the corresponding binary for your system from the [latest releases](htt
 5. If the proxy server is reachable, you will get a message and the app will close down automatically.
 6. Now restart the app, and it will use the Proxy to connect to plex.tv
 
-Note that you can run the app without the proxy after you logged in the first time. The app will then run in "Offline" mode. However you cannot switch users without the proxy though.
+Note that you can run the TV-App without the proxy after you logged in the first time. The app will then run in "Offline" mode. However you cannot switch users without the proxy though.
+
+#### Using Android
+
+On Android this package is currently not yet available as native app. Nevertheless it can be executed, albeit with a little tinkering. To do that, follow these steps:
+
+1. Install [termux](https://play.google.com/store/apps/details?id=com.termux) on your device
+2. Run termux, a terminal will open
+3. Run the command `pkg install git golang` which will install the needed tools
+4. Get the current repository by typing `git clone https://github.com/kadrim/proxy4plex`
+5. Enter the directory `cd proxy4plex`
+6. Compile a binary for your android device `go build`
+7. Execute the proxy! `./proxy4plex`
+
+After that you can use the IP-Adress of your android device for your Plex-App on the TV. If you close termux or reboot your device you can simply re-run the proxy by starting termux and then starting the proxy via the command `proxy4plex/proxy4plex`
+
+## Compiling
+
+At the time of writing, this package needs at least [golang](https://golang.org/) v1.15
+
+To compile a binary for your currently running system, simply run this command:
+
+`go build`
+
+To compile for all possible architectures you can run the command `go-build-all.sh` from a bash terminal (works also on windows in a git-bash terminal). The output binaries will be put into the directory `build/`
 
 ## TODOs
 
 - detect OS and allow User to install the proxy as a boot-service
 - serve as sideloading server so no need to manually run SammyWidgets
-- porting to Android and iOS
+- porting to Android and iOS as native apps
 - auto-update notifications 
 
 ## Thanks

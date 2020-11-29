@@ -10,9 +10,11 @@ contains() {
     [[ $1 =~ (^|[[:space:]])$2($|[[:space:]]) ]]
 }
 
+
+VERSION=$(git describe --long --tags)
 SOURCE_FILE=$(echo "$@" | sed 's/\.go//')
 CURRENT_DIRECTORY="${PWD##*/}"
-OUTPUT=${SOURCE_FILE:-$CURRENT_DIRECTORY} # if no src file given, use current dir name
+OUTPUT="build/${SOURCE_FILE:-$CURRENT_DIRECTORY}" # if no src file given, use current dir name
 FAILURES=""
 
 mkdir -p build
@@ -28,7 +30,7 @@ NOT_ALLOWED_OS=${NOT_ALLOWED_OS:-"js android ios solaris illumos aix"}
 while IFS= read -r target; do
     GOOS=${target%/*}
     GOARCH=${target#*/}
-    BIN_FILENAME="build/${OUTPUT}-${GOOS}-${GOARCH}"
+    BIN_FILENAME="${OUTPUT}-${VERSION}-${GOOS}-${GOARCH}"
     
     if contains "$NOT_ALLOWED_OS" "$GOOS" ; then
         continue
@@ -52,7 +54,7 @@ while IFS= read -r target; do
 
         # Now do the arm build
         for GOARM in $arms; do
-            BIN_FILENAME="build/${OUTPUT}-${GOOS}-${GOARCH}${GOARM}"
+            BIN_FILENAME="${OUTPUT}-${VERSION}-${GOOS}-${GOARCH}${GOARM}"
             if [[ "${GOOS}" == "windows" ]]; then BIN_FILENAME="${BIN_FILENAME}.exe"; fi
             CMD="GOARM=${GOARM} GOOS=${GOOS} GOARCH=${GOARCH} go build $FLAGS -o ${BIN_FILENAME} $@"
             echo "${CMD}"
