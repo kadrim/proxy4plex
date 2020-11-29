@@ -60,9 +60,6 @@ To compile for all possible architectures you can run the command `go-build-all.
 - Thanks go out to @makeworld for the great makefile to build all platforms at https://gist.github.com/makeworld-the-better-one/e1bb127979ae4195f43aaa3ad46b1097
 - Very specials thanks to @Orca for his work on the plex-app for smarthub devices. Without that, nothing here would exist!
 
-## Compiling
-Clone this repository and compile the Program using [AutoIt v3](https://www.autoitscript.com/site/)
-
 ## Donation
 I developed this package in my free time. If you like it and want to support future updates, feel free to donate here:
 
