@@ -6,7 +6,7 @@ Proxy Server for older Samsung Smart-TVs (E/F - Series) which only support TLS u
 ### Preparing the Smart-TV
 
 - Download the latest version of Orca's Plex-App for Samsung TVs from here https://www.dropbox.com/s/f17hx2w7tvofjqr/Plex_2.014_11112020.zip?dl=1
-- Install it sing USB-Sideloading or via SammyWidgets
+- Install it using USB-Sideloading or via SammyWidgets
 - Check this thread if you need more information: https://forums.plex.tv/t/samsung-tv-cannot-connect-to-plex/650100/8
 
 ### Preparing the Proxy
