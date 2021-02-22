@@ -11,7 +11,7 @@ Download the corresponding binary for your system from the [latest releases](htt
 
 #### Method A: Using proxy4plex as sideloader
 
-Notice: this will only work, if the system you are running on, is on the same network as your TV and has not yet a service running on Port 80, because this is needed by the TV to download new Apps. I.e: This will not work on non-rooted Android Phones, as the Port 80 is blocked. Running the proxy on non-rooted Android phones does work. So the initial Setup has do be done via another machine.
+Notice: this will only work, if the system you are running on, is on the same network as your TV and has not yet a service running on Port 80, because this is needed by the TV to download new Apps. I.e.: Sideloading will not work on non-rooted Android Phones, as the Port 80 is blocked. Running the just the proxy on non-rooted Android phones does work. So the initial Setup for sideloading has do be done via another machine if your android device is not rooted.
 
 This process has only to be done once. So after the app has been installed via this method, it stays on the TV!
 
