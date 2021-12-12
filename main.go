@@ -14,11 +14,12 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 const (
 	port              = "3000"
-	server            = "http://plex.tv"
+	host              = "plex.tv"
 	officialAppURL    = "https://www.dropbox.com/s/f17hx2w7tvofjqr/Plex_2.014_11112020.zip?dl=1"
 	officialAppChksum = "8c6b2bb25a4c2492fd5dbde885946dcb6b781ba292e5038239559fd7a20e707e"
 	modifiedAppName   = "Plex_2.014_net"
@@ -53,7 +54,7 @@ func (t *transport) RoundTrip(req *http.Request) (resp *http.Response, err error
 // handle a request send it to the server
 func handleRequest(res http.ResponseWriter, req *http.Request) {
 	// get the request URI
-	server, _ := url.Parse(server)
+	server, _ := url.Parse("https://" + host)
 	reqURL, _ := url.Parse(req.RequestURI)
 	if reqURL.Query().Get("url") != "" { // special proxy handling
 		// extract the GET-Param url
@@ -76,6 +77,12 @@ func handleRequest(res http.ResponseWriter, req *http.Request) {
 	req.URL.Scheme = server.Scheme
 	req.Header.Set("X-Forwarded-Host", req.Host)
 	req.Host = server.Host
+
+	if strings.HasPrefix(req.URL.Path, "/pins/") && req.URL.Host != host {
+		res.Header().Add("Location", "http://"+req.Header.Get("X-Forwarded-Host")+"?url="+"https://"+host+req.URL.Path)
+		res.WriteHeader(http.StatusTemporaryRedirect)
+		return
+	}
 
 	// run the proxy
 	proxy.ServeHTTP(res, req)
@@ -111,9 +118,9 @@ func retreiveZipFile() ([]byte, error) {
 	// checksum
 	chksum := sha256.Sum256(body)
 	if hex.EncodeToString(chksum[:]) == officialAppChksum {
-		log.Println("Checksum match. Going on ...")
+		log.Println("checksum match. going on ...")
 	} else {
-		err := errors.New("Checksum did not match, aborting")
+		err := errors.New("checksum did not match, aborting")
 		return nil, err
 	}
 
