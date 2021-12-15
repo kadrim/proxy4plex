@@ -67,6 +67,23 @@ To compile a binary for your currently running system, simply run this command:
 
 To compile for all possible architectures you can run the command `go-build-all.sh` from a bash terminal (works also on windows in a git-bash terminal). The output binaries will be put into the directory `build/`
 
+## Docker
+
+You can easily run this proxy as a Docker container:
+
+* Pull docker image and run:
+```
+docker pull kadrim/proxy4plex
+docker run -it -p 80:80 -p 3000:3000 --rm kadrim/proxy4plex
+```
+or 
+
+* Build and run container from source:
+```
+docker build -t proxy4plex .
+docker run -it -p 80:80 -p 3000:3000 --rm proxy4plex
+```
+
 ## TODOs
 
 - detect OS and allow User to install the proxy as a boot-service
