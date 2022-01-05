@@ -10,5 +10,6 @@ const (
 )
 
 func main() {
+	checkIPs()
 	runProxy()
 }
