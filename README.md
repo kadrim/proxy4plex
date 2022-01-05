@@ -82,7 +82,7 @@ To compile for all possible architectures you can run the command `go-build-all.
 
 ## Docker
 
-You can easily run this proxy as a Docker container:
+You can easily run this proxy as a [Docker container](https://hub.docker.com/r/kadrim/proxy4plex):
 
 * Pull docker image and run:
 ```
