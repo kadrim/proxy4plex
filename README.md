@@ -26,7 +26,7 @@ This process has only to be done once. So after the app has been installed via t
 7. Select `Server-IP-Settings` and enter the local IP-Adress of your machine running `proxy4plex`
 8. Select `Synchronize` and the app will be installed permanentely on the TV
 
-###### H-Series TV
+##### H-Series TV
 
 1. Start the `proxy4plex` binary
 2. Press `Menu` on your TV-Remote
