@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 )
 
@@ -27,28 +28,61 @@ func extractZipFile(zipFile *zip.File) ([]byte, error) {
 func retreiveZipFile() ([]byte, error) {
 	// only retreive data once
 	if modifiedBuffer != nil {
+		log.Println("reusing already prepared net-sideloader")
 		return modifiedBuffer, nil
 	}
 
-	// download the original zip
-	resp, err := http.Get(officialAppURL)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
+	var zipData []byte
+	var download bool
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
+	if _, err := os.Stat(officialAppFile); err == nil { // check if the plex-app has already been downloaded
+		log.Println("plex-app exists in local directory, not downloading it again")
+		zipData, err = ioutil.ReadFile(officialAppFile)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		// download the original zip
+		log.Println("downloading application from " + officialAppURL + " ... ")
+		resp, err := http.Get(officialAppURL)
+		if err != nil {
+			return nil, err
+		}
+		defer resp.Body.Close()
+		log.Println("done!")
+
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		} else {
+			zipData = body
+		}
+
+		download = true
 	}
 
 	// checksum
-	chksum := sha256.Sum256(body)
+	chksum := sha256.Sum256(zipData)
 	if hex.EncodeToString(chksum[:]) == officialAppChksum {
 		log.Println("checksum match. going on ...")
 	} else {
-		err := errors.New("checksum did not match, aborting")
+		var message string
+		message = "checksum did not match, aborting"
+		if !download {
+			message = message + "\nPlease delete existing file " + officialAppFile + " to force redownload"
+		}
+		err := errors.New(message)
+		log.Println(message)
+
 		return nil, err
+	}
+
+	if download {
+		// write zipData to local file for caching
+		err := ioutil.WriteFile(officialAppFile, zipData, 0664)
+		if err != nil {
+			log.Fatal("could not save downloaded file, going on anyway")
+		}
 	}
 
 	// attach the zipWriter to the buffer
@@ -56,7 +90,7 @@ func retreiveZipFile() ([]byte, error) {
 	w := zip.NewWriter(buf)
 
 	// create zipReader
-	zipReader, err := zip.NewReader(bytes.NewReader(body), int64(len(body)))
+	zipReader, err := zip.NewReader(bytes.NewReader(zipData), int64(len(zipData)))
 	if err != nil {
 		return nil, err
 	}
@@ -92,6 +126,8 @@ func retreiveZipFile() ([]byte, error) {
 
 	// write data to global var
 	modifiedBuffer = buf.Bytes()
+
+	log.Println("app ready for net-sideloading!")
 
 	return modifiedBuffer, nil
 }

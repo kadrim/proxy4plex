@@ -15,6 +15,8 @@ _Notice: this will only work, if the system you are running on, is on the same n
 
 This process has only to be done once. So after the app has been installed via this method, it stays on the TV!
 
+Proxy4plex will automatically download the the plex-app and modify it for network-sideloading. If, for whatever reason, you want to [predownload the app](https://www.dropbox.com/s/f17hx2w7tvofjqr/Plex_2.014_11112020.zip?dl=1) yourself, and place it in the same folder as the executable for proxy4plex.
+
 ##### E/F-Series TV
 
 1. Start the `proxy4plex` binary
