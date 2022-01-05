@@ -1,5 +1,5 @@
 # proxy4plex
-Proxy Server for older Samsung Smart-TVs (E/F - Series) which only support TLS up to 1.1
+Proxy Server for older Samsung Smart-TVs (E/F/H - Series) which only support TLS up to 1.1
 
 ## Installation
 
@@ -15,14 +15,27 @@ _Notice: this will only work, if the system you are running on, is on the same n
 
 This process has only to be done once. So after the app has been installed via this method, it stays on the TV!
 
+##### E/F-Series TV
+
 1. Start the `proxy4plex` binary
-2. Open `smarthub` on your TV
+2. Open `Smarthub` on your TV
 3. Hit the `Red` button on the remote to login to an account
 4. Use `develop` for username, password should fill automatically, if it does not, use `111111`
-5. Hit the `Tools` button on the remote and select `Settings` while within `smarthub`
+5. Hit the `Tools` button on the remote and select `Settings` while within `Smarthub`
 6. Select the menu-entry `Development` and accept the agreement after reading it
 7. Select `Server-IP-Settings` and enter the local IP-Adress of your machine running `proxy4plex`
 8. Select `Synchronize` and the app will be installed permanentely on the TV
+
+###### H-Series TV
+
+1. Start the `proxy4plex` binary
+2. Press `Menu` on your TV-Remote
+3. Navigate to `Smart Hub` / `Samsung Account` / `Login`
+4. Use `develop` for username, password should fill automatically, if it does not, use `any`
+5. Now open `Smarthub` / `Samsung Apps` on your TV to display all installed Apps (not just the small ribbon when pressing the Smarthub button on the remote)
+6. Move the cursor to any of the already installed apps and press and keep holding the `OK`-Button on your remote for about `5 seconds` until a new menu appears
+7. Select `IP Setting` and enter the local IP-Adress of your machine running `proxy4plex`
+8. Once again bring up the previous menu (see step `6`) and select `Start User App Sync`. The app will be installed permanentely on the TV
 
 #### Method B: Manual sideloading
 
