@@ -59,7 +59,7 @@ Beware: Sideloading (i.e. installing the app on the TV) does not work this way, 
 
 ## Compiling
 
-At the time of writing, this package needs at least [golang](https://golang.org/) v1.15
+At the time of writing, this package needs at least [golang](https://golang.org/) v1.17
 
 To compile a binary for your currently running system, simply run this command:
 
