@@ -81,7 +81,7 @@ func retreiveZipFile() ([]byte, error) {
 		// write zipData to local file for caching
 		err := ioutil.WriteFile(officialAppFile, zipData, 0664)
 		if err != nil {
-			log.Fatal("could not save downloaded file, going on anyway")
+			log.Println("could not save downloaded file, going on anyway")
 		}
 	}
 
