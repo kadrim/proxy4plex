@@ -71,7 +71,7 @@ func checkIPs() {
 		}
 		ip, err := getOutboundIP()
 		if err != nil {
-			log.Panicln(err)
+			log.Println(err)
 		} else {
 			log.Println("The most likely IP-Address to use for Plex should be: " + ip)
 		}
