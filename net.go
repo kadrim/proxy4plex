@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-func getIPs() ([]string, error) {
-	var ips []string
+func getIPs() ([]net.IP, error) {
+	var ips []net.IP
 	ifaces, err := net.Interfaces()
 	if err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func getIPs() ([]string, error) {
 			if ip == nil {
 				continue // not an ipv4 address
 			}
-			ips = append(ips, ip.String())
+			ips = append(ips, ip)
 		}
 	}
 	if len(ips) > 0 {
@@ -48,16 +48,16 @@ func getIPs() ([]string, error) {
 	return nil, errors.New("are you connected to the network?")
 }
 
-func getOutboundIP() (string, error) {
+func getOutboundIP() (net.IP, error) {
 	conn, err := net.Dial("udp", "8.8.8.8:53")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer conn.Close()
 
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 
-	return localAddr.IP.String(), nil
+	return localAddr.IP, nil
 }
 
 func checkIPs() {
@@ -67,13 +67,13 @@ func checkIPs() {
 	} else {
 		log.Println("The Proxy will be listening on these IP-Addresses:")
 		for index, ip := range ips {
-			log.Println("#" + strconv.Itoa(index+1) + ": " + ip)
+			log.Println("#" + strconv.Itoa(index+1) + ": " + ip.String())
 		}
 		ip, err := getOutboundIP()
 		if err != nil {
 			log.Println(err)
 		} else {
-			log.Println("The most likely IP-Address to use for Plex should be: " + ip)
+			log.Println("The most likely IP-Address to use for Plex should be: " + ip.String())
 		}
 	}
 }
