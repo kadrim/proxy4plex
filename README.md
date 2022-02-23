@@ -99,6 +99,14 @@ docker build -t proxy4plex .
 docker run -it -p 80:80 -p 3000:3000 --rm proxy4plex
 ```
 
+* Build and push container for multiple archs (only for developers):
+```
+docker buildx create --name crossbuilder
+docker buildx use crossbuilder
+docker buildx inspect --bootstrap
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t kadrim/proxy4plex:latest --push .
+```
+
 ## TODOs
 
 - detect OS and allow User to install the proxy as a boot-service
