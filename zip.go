@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -22,7 +22,7 @@ func extractZipFile(zipFile *zip.File) ([]byte, error) {
 		return nil, err
 	}
 	defer file.Close()
-	return ioutil.ReadAll(file)
+	return io.ReadAll(file)
 }
 
 func retreiveZipFile() ([]byte, error) {
@@ -37,7 +37,7 @@ func retreiveZipFile() ([]byte, error) {
 
 	if _, err := os.Stat(officialAppFile); err == nil { // check if the plex-app has already been downloaded
 		log.Println("plex-app exists in local directory, not downloading it again")
-		zipData, err = ioutil.ReadFile(officialAppFile)
+		zipData, err = os.ReadFile(officialAppFile)
 		if err != nil {
 			return nil, err
 		}
@@ -51,7 +51,7 @@ func retreiveZipFile() ([]byte, error) {
 		defer resp.Body.Close()
 		log.Println("done!")
 
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return nil, err
 		} else {
@@ -79,7 +79,7 @@ func retreiveZipFile() ([]byte, error) {
 
 	if download {
 		// write zipData to local file for caching
-		err := ioutil.WriteFile(officialAppFile, zipData, 0664)
+		err := os.WriteFile(officialAppFile, zipData, 0664)
 		if err != nil {
 			log.Println("could not save downloaded file, going on anyway")
 		}
