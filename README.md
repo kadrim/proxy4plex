@@ -107,6 +107,22 @@ docker buildx inspect --bootstrap
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t kadrim/proxy4plex:latest --push .
 ```
 
+### Docker-Compose / Portainer
+
+If you prefer, you can run this via docker-compose or Portainer by creating a file called `docker-compose.yaml` and adding this content:
+
+```yaml
+version: "3"
+services:
+  proxy4plex:
+    image: kadrim/proxy4plex
+    container_name: proxy4plex
+    ports:
+      - 80:80
+      - 3000:3000
+    restart: unless-stopped
+```
+
 ## TODOs
 
 - detect OS and allow User to install the proxy as a boot-service
