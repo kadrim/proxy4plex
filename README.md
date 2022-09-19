@@ -123,6 +123,15 @@ services:
     restart: unless-stopped
 ```
 
+## Command-Line Arguments
+
+The standard behaviour of the program can be altered using the following CLI-Args:
+
+| Argument               | Description                                                                                  |
+| ---------------------- | -------------------------------------------------------------------------------------------- |
+| -h                     | Display all available CLI-Arguments                                                          |
+| -disable-sideloading   | This Option will disable sideloading and prevent the use of Port 80 by the Application       |
+
 ## TODOs
 
 - detect OS and allow User to install the proxy as a boot-service

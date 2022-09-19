@@ -69,7 +69,7 @@ func handleRequest(res http.ResponseWriter, req *http.Request) {
 	proxy.ServeHTTP(res, req)
 }
 
-func runProxy() {
+func runProxy(disableSideloading bool) {
 	// handle simple information path
 	http.HandleFunc("/info", func(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte("The Plex proxy service is running on " + req.Host))
@@ -118,8 +118,10 @@ func runProxy() {
 	// try to handle everything on port 80 aswell for serving the app
 	// Note: this will not work on non-rooted android because only high-ports can be used
 	go func() {
-		log.Println("Trying to start app-deployer on port 80 ...")
-		http.ListenAndServe(":80", nil)
+		if !disableSideloading {
+			log.Println("Trying to start app-deployer on port 80 ...")
+			http.ListenAndServe(":80", nil)
+		}
 	}()
 
 	log.Println("Server starting on Port " + port + " ...")

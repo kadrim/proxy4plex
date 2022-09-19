@@ -1,5 +1,7 @@
 package main
 
+import "flag"
+
 const (
 	port              = "3000"
 	host              = "plex.tv"
@@ -11,6 +13,9 @@ const (
 )
 
 func main() {
+	disableSideloadingPtr := flag.Bool("disable-sideloading", false, "This Option will disable sideloading and prevent the use of Port 80 by the Application")
+	flag.Parse()
+
 	checkIPs()
-	runProxy()
+	runProxy(*disableSideloadingPtr)
 }
