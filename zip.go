@@ -79,7 +79,7 @@ func retreiveZipFile() ([]byte, error) {
 
 	if download {
 		// write zipData to local file for caching
-		err := os.WriteFile(officialAppFile, zipData, 0664)
+		err := os.WriteFile(officialAppFile, zipData, 0600)
 		if err != nil {
 			log.Println("could not save downloaded file, going on anyway")
 		}
