@@ -25,6 +25,11 @@ jobs:
       - name: Build
         run: go build -v ./...
 
+      - name: Run security scan (gosec)
+        run: |
+          go install github.com/securego/gosec/v2/cmd/gosec@latest
+          gosec ./...
+
   build-all:
     name: Build All Platforms
     runs-on: ubuntu-latest
