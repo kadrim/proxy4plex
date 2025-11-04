@@ -30,7 +30,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: build/*
-          draft: false
+          draft: true
           prerelease: false
           generate_release_notes: true
         env:
