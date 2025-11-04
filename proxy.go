@@ -17,10 +17,11 @@ type transport struct {
 
 // isLocalOrPrivate checks if a hostname resolves to localhost or private IP ranges
 func isLocalOrPrivate(hostname string) bool {
-	// Remove port if present
-	host := hostname
-	if colonIndex := strings.LastIndex(hostname, ":"); colonIndex != -1 {
-		host = hostname[:colonIndex]
+	// Use net.SplitHostPort to properly handle IPv6 addresses
+	host, _, err := net.SplitHostPort(hostname)
+	if err != nil {
+		// If there's no port, use the hostname as-is
+		host = hostname
 	}
 
 	// Check for localhost
@@ -28,14 +29,15 @@ func isLocalOrPrivate(hostname string) bool {
 		return true
 	}
 
-	// Try to resolve the hostname
+	// Try to resolve the hostname to IP addresses
 	ips, err := net.LookupIP(host)
 	if err != nil {
 		// If we can't resolve, block it to be safe
 		return true
 	}
 
-	// Check if any resolved IP is private
+	// Check if any resolved IP is private or loopback
+	// This helps prevent DNS rebinding attacks by checking the actual resolved IPs
 	for _, ip := range ips {
 		if ip.IsLoopback() || ip.IsPrivate() {
 			return true
@@ -194,6 +196,8 @@ func runProxy(disableSideloading bool) {
 
 	// try to handle everything on port 80 aswell for serving the app
 	// Note: this will not work on non-rooted android because only high-ports can be used
+	// The goroutine will exit after logging the error, which is expected behavior
+	// for cases where port 80 requires elevated privileges
 	go func() {
 		if !disableSideloading {
 			log.Println("Trying to start app-deployer on port 80 ...")
@@ -205,7 +209,7 @@ func runProxy(disableSideloading bool) {
 				ReadHeaderTimeout: 5 * time.Second,
 			}
 			if err := server80.ListenAndServe(); err != nil {
-				log.Printf("Port 80 server error: %v\n", err)
+				log.Printf("Port 80 server error (this is expected on non-rooted systems): %v\n", err)
 			}
 		}
 	}()
