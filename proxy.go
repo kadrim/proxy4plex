@@ -45,6 +45,7 @@ func (t *transport) RoundTrip(req *http.Request) (resp *http.Response, err error
 		return nil, err
 	}
 
+	// check if result is a redirect and handle that accordingly
 	switch resp.StatusCode {
 	case 301:
 		fallthrough
@@ -57,7 +58,9 @@ func (t *transport) RoundTrip(req *http.Request) (resp *http.Response, err error
 	return resp, nil
 }
 
+// handle a request send it to the server
 func handleRequest(res http.ResponseWriter, req *http.Request) {
+	// get the request URI
 	server, err := url.Parse("https://" + host)
 	if err != nil {
 		http.Error(res, "Invalid server URL", http.StatusInternalServerError)
@@ -70,7 +73,8 @@ func handleRequest(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if reqURL.Query().Get("url") != "" {
+	if reqURL.Query().Get("url") != "" { // special proxy handling
+		// extract the GET-Param url
 		targetURL := reqURL.Query().Get("url")
 		server, err = url.Parse(targetURL)
 		if err != nil {
@@ -88,9 +92,11 @@ func handleRequest(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
+		// replace request
 		req.URL = server
 		req.RequestURI = ""
 
+		// mux host
 		server, err = url.Parse(server.Scheme + "://" + server.Host)
 		if err != nil {
 			http.Error(res, "Invalid server URL", http.StatusInternalServerError)
@@ -98,9 +104,11 @@ func handleRequest(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
+	// prepare reverse proxy
 	proxy := httputil.NewSingleHostReverseProxy(server)
 	proxy.Transport = &transport{http.DefaultTransport}
 
+	// update headers
 	req.URL.Host = server.Host
 	req.URL.Scheme = server.Scheme
 	req.Header.Set("X-Forwarded-Host", req.Host)
@@ -112,15 +120,18 @@ func handleRequest(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// run the proxy
 	proxy.ServeHTTP(res, req)
 }
 
 func runProxy(disableSideloading bool) {
+	// handle simple information path
 	http.HandleFunc("/info", func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		_, _ = res.Write([]byte("The Plex proxy service is running on " + req.Host))
 	})
 
+	//handle widgetlist for sideloading
 	http.HandleFunc("/widgetlist.xml", func(res http.ResponseWriter, req *http.Request) {
 		buf, err := retreiveZipFile()
 		if err != nil {
@@ -146,6 +157,7 @@ func runProxy(disableSideloading bool) {
 		_, _ = res.Write([]byte(xml))
 	})
 
+	// handle app-deployment
 	http.HandleFunc("/"+modifiedAppFile, func(res http.ResponseWriter, req *http.Request) {
 		buf, err := retreiveZipFile()
 		if err != nil {
@@ -155,10 +167,12 @@ func runProxy(disableSideloading bool) {
 			log.Println(err)
 			return
 		}
+		// write the http-response
 		res.Header().Set("Content-Type", "application/zip")
 		_, _ = res.Write(buf)
 	})
 
+	// start real proxy
 	http.HandleFunc("/", handleRequest)
 
 	serverMain := &http.Server{
@@ -169,6 +183,8 @@ func runProxy(disableSideloading bool) {
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
+	// try to handle everything on port 80 aswell for serving the app
+	// Note: this will not work on non-rooted android because only high-ports can be used
 	go func() {
 		if !disableSideloading {
 			log.Println("Trying to start app-deployer on port 80 ...")
